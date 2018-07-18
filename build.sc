@@ -1,6 +1,6 @@
 import mill._, scalalib._
 
-object example extends ScalaModule{
+object example extends SbtModule{
   def scalaVersion="2.12.6"
 
   import coursier.maven.MavenRepository
