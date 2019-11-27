@@ -3,3 +3,7 @@
 out/
 bin/
 target/
+.bloop/
+.metals/
+.ipynb_checkpoints/
+*.jar
