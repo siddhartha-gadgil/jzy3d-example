@@ -28,6 +28,11 @@ object Surface{
       10 * Math.sin(x / 10) * Math.cos(y / 20)
   }
 
+  lazy val mapper2 = new Mapper() {
+    def f(x: Double, y: Double) =
+      - 10 * Math.sin(x / 10) * Math.cos(y / 20)
+  }
+
   // Define range and precision for the function to plot
   lazy val range = new Range(-150, 150)
   val steps = 50
@@ -46,10 +51,24 @@ object Surface{
     surf 
   }
 
+  lazy val surface2 = {
+    val surf = Builder.buildOrthonormal(new OrthonormalGrid(range, steps), mapper2)
+    surf.setColorMapper(
+    new ColorMapper(new ColorMapRainbow(),
+                    surf.getBounds().getZmin(),
+                    surf.getBounds().getZmax(),
+                    new Color(1, 1, 1, .5f)))
+    surf.setFaceDisplayed(true)
+    surf.setWireframeDisplayed(false)
+    surf.setWireframeColor(Color.BLACK)
+    surf 
+  }
+
   // Create a chart and add the surface
   lazy val chart = {
     val ach = new AWTChart(Quality.Advanced)
     ach.add(surface)
+    ach.add(surface2)
     ach
   }
 
