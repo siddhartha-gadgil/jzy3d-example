@@ -1,8 +1,5 @@
 package surface
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jzy3d.chart.Chart;
 import org.jzy3d.colors.ColorMapper;
 import org.jzy3d.colors.colormaps.ColorMapRainbow;
@@ -13,7 +10,7 @@ import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.chart._
 import org.jzy3d.plot3d.rendering.canvas.Quality
 
-import scala.collection.JavaConversions._
+import scala.jdk.CollectionConverters._
 
 // object BuildSurfaceDemo extends App {
 
@@ -74,7 +71,7 @@ object BuildSurface {
     } 
 
   lazy val surface = {
-    val surf = (new Shape(polygons ++ polygonsFlip))
+    val surf = (new Shape((polygons ++ polygonsFlip).asJava))
     surf.add(line)
 
     surf.setColorMapper(
