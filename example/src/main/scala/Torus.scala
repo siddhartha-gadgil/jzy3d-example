@@ -16,6 +16,8 @@ import scala.math.{sin, cos, Pi, sqrt}
 import org.jzy3d.colors.colormaps.ColorMapHotCold
 import org.jzy3d.colors.Color
 import scala.util._
+import org.jzy3d.chart.factories.AWTChartComponentFactory
+import org.jzy3d.plot3d.rendering.view.AWTRenderer3d
 
 // import scala.collection.JavaConversions._
 
@@ -96,8 +98,18 @@ object Torus {
     chart.getScene().getGraph().add(torusGridSurface(steps));
     chart
   }
+
+  def torusBuffer(steps: Int) = {
+    val chart = AWTChartComponentFactory.chart(Quality.Advanced, "offscreen")
+    chart.add(torusGridSurface(steps))
+    val canvas = chart.getCanvas()
+    val renderer = canvas.getRenderer().asInstanceOf[AWTRenderer3d]
+    canvas.screenshot()
+    renderer.getLastScreenshotImage()
+  }
 }
 
 object TorusApp extends App {
-  Torus.torusChart(30).open("Jzy3d Demo", 600, 600)
+  Torus.torusChart(50).open("Jzy3d Demo", 600, 600)
+  Torus.torusBuffer(50)
 }
