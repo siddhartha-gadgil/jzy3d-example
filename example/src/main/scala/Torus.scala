@@ -49,7 +49,7 @@ object Torus {
       poly.add(torusPoint((i + 1).toDouble / steps, j.toDouble / steps))
       poly.add(torusPoint((i + 1).toDouble / steps, (j + 1).toDouble / steps))
       poly.add(torusPoint(i.toDouble / steps, (j + 1).toDouble / steps))
-        // if ((i + j) % 4 != 0 || i % 2 != 0)
+      if (math.abs(i /2 - j) % steps  != 0)
          poly.setFaceDisplayed(false)
       poly.setWireframeColor(org.jzy3d.colors.Color.GREEN);
       poly
@@ -89,7 +89,7 @@ object Torus {
       )
     );
     surf.setWireframeDisplayed(true);
-    surf.add(line(3, 2, steps * 10))
+    // surf.add(line(3, 2, steps * 10))
     surf
   }
 
@@ -110,6 +110,10 @@ object Torus {
 }
 
 object TorusApp extends App {
-  Torus.torusChart(50).open("Jzy3d Demo", 600, 600)
-  Torus.torusBuffer(50)
+  val tc = Torus.torusChart(50)
+  tc.open("Jzy3d Demo", 600, 600)
+  import java.io._
+  val image = new File("image.png")
+  tc.screenshot(image)
+  val buf = Torus.torusBuffer(50)
 }
