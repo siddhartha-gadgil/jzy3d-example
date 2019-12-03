@@ -18,6 +18,7 @@ import org.jzy3d.colors.Color
 import scala.util._
 import org.jzy3d.chart.factories.AWTChartComponentFactory
 import org.jzy3d.plot3d.rendering.view.AWTRenderer3d
+import javax.imageio.ImageIO
 
 // import scala.collection.JavaConversions._
 
@@ -49,32 +50,20 @@ object Torus {
       poly.add(torusPoint((i + 1).toDouble / steps, j.toDouble / steps))
       poly.add(torusPoint((i + 1).toDouble / steps, (j + 1).toDouble / steps))
       poly.add(torusPoint(i.toDouble / steps, (j + 1).toDouble / steps))
-      if (math.abs(i /2 - j) % steps  != 0)
-         poly.setFaceDisplayed(false)
+      poly.setFaceDisplayed(false)
       poly.setWireframeColor(org.jzy3d.colors.Color.GREEN);
       poly
     }
   }
 
   def line(xs: Int, ys: Int, steps: Int) = {
-    val colourMapper = new ColorMapper(
-      new ColorMapRainbow(),
-      4,
-      6,
-      new Color(1, 1, 1, .5f)
-    )
 
     val points = (0 to steps).map(
       i => torusPoint(xs * i.toDouble / steps, ys * i.toDouble / steps)
     )
-    val l = new LineStrip()
-    points.foreach { p =>
-      val c = p.getCoord()
-      val r = sqrt(c.x * c.x + (c.y * c.y))
-      p.setColor(colourMapper.getColor(r))
-      l.add(p)
-    }
-    l.setWidth(5)
+    val l = new LineStrip(points.map(_.getCoord()).asJava)
+    l.setWidth(3)
+    l.setWireframeColor(Color.MAGENTA)
     l
   }
 
@@ -89,31 +78,29 @@ object Torus {
       )
     );
     surf.setWireframeDisplayed(true);
-    // surf.add(line(3, 2, steps * 10))
     surf
   }
 
   def torusChart(steps: Int) = {
     val chart = new AWTChart(Quality.Advanced)
-    chart.getScene().getGraph().add(torusGridSurface(steps));
+    chart.getScene().getGraph().add(torusGridSurface(steps))
+    chart.getScene().getGraph().add(line(2, 1, steps));
     chart
   }
 
-  def torusBuffer(steps: Int) = {
-    val chart = AWTChartComponentFactory.chart(Quality.Advanced, "offscreen")
-    chart.add(torusGridSurface(steps))
-    val canvas = chart.getCanvas()
-    val renderer = canvas.getRenderer().asInstanceOf[AWTRenderer3d]
-    canvas.screenshot()
-    renderer.getLastScreenshotImage()
+  def torusImage(steps: Int) = {
+    val tc = Torus.torusChart(steps)
+    tc.open("Jzy3d Demo", 600, 600)
+    import java.io._
+    val imageFile = new File("image.png")
+    tc.screenshot(imageFile)
+    val image = ImageIO.read(imageFile)
+    image
   }
+
 }
 
 object TorusApp extends App {
-  val tc = Torus.torusChart(50)
-  tc.open("Jzy3d Demo", 600, 600)
-  import java.io._
-  val image = new File("image.png")
-  tc.screenshot(image)
-  val buf = Torus.torusBuffer(50)
+  Torus.torusImage(50)
+
 }
