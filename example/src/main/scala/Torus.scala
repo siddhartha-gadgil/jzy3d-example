@@ -22,6 +22,8 @@ import java.awt.image.BufferedImage
 object Torus {
   val torusScale = 3.0
 
+  val (xv, yv, zv) = (1.0, 1.0, 10.0)
+
   def point(x: Double, y: Double, z: Double): Point =
     new Point(new Coord3d(x, y, z))
 
@@ -37,6 +39,19 @@ object Torus {
     val x = sin(2 * Pi * u) * (torusScale + (r * sin(2 * Pi * v)))
     val y = cos(2 * Pi * u) * (torusScale + (r * sin(2 * Pi * v)))
     new Coord3d(x, y, z)
+  }
+
+  def torusNormal(u: Double, v: Double) = {
+    val z = cos(v * 2 * Pi)
+    val x = sin(2 * Pi * u) * (0 + sin(2 * Pi * v))
+    val y = cos(2 * Pi * u) * (0 + sin(2 * Pi * v))
+    (x, y, z)
+  }
+
+  def isVisible(u: Double, v: Double): Boolean = {
+    val p = torusCoords(u, v)
+    val (xn, yn, zn) = torusNormal(u, v)
+    ((xv - p.x) * xn) + ((yv - p.y) * yn) + ((zv - p.z) * zn) > 0
   }
 
   def torusGridPloygons(steps: Int) = {
@@ -58,14 +73,16 @@ object Torus {
   }
 
   def line(xs: Int, ys: Int, steps: Int) = {
+    val parameters =
+      (0 to steps).map(i => (xs * i.toDouble / steps, ys * i.toDouble / steps))
 
-    val points = (0 to steps).map(
-      i => torusPoint(xs * i.toDouble / steps, ys * i.toDouble / steps)
-    )
-    points.zipWithIndex.foreach {
-      case (p, i) =>
-        if (p.getCoord().z > 0 || i % 3 == 0) p.setColor(Color.MAGENTA)
+    val points = parameters.zipWithIndex.map {
+      case ((u, v), i) =>
+        val p = torusPoint(u, v)
+        if (isVisible(u, v) || i % 3 == 0)
+          p.setColor(Color.MAGENTA)
         else p.setColor(Color.WHITE)
+        p
     }
     val l = new LineStrip()
     points.foreach(
@@ -90,7 +107,7 @@ object Torus {
 
   def torusImage(steps: Int): BufferedImage = {
     val tc = Torus.torusChart(steps)
-    tc.setViewPoint(new Coord3d(1, 1, 1000))
+    tc.setViewPoint(new Coord3d(xv, yv, zv))
     tc.open("Jzy3d Demo", 600, 600)
     import java.io._
     val imageFile = new File("image.png")
