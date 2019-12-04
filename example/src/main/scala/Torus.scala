@@ -26,17 +26,18 @@ object Torus {
   def point(x: Double, y: Double, z: Double): Point =
     new Point(new Coord3d(x, y, z))
 
-  def torusPoint(u: Double, v: Double): Point = {
+  def torusPoint(u: Double, v: Double, sc: Double = 1): Point = {
     val z = cos(v * 2 * Pi)
     val x = sin(2 * Pi * u) * (5 + sin(2 * Pi * v))
     val y = cos(2 * Pi * u) * (5 + sin(2 * Pi * v))
     point(x, y, z)
   }
 
-  def torusCoords(u: Double, v: Double): Coord3d = {
-    val z = cos(v * 2 * Pi)
-    val x = sin(2 * Pi * u) * (5 + sin(2 * Pi * v))
-    val y = cos(2 * Pi * u) * (5 + sin(2 * Pi * v))
+  def torusCoords(u: Double, v: Double, r: Double = 1): Coord3d = {
+    val z = r * cos(v * 2 * Pi)
+    val x = sin(2 * Pi * u) * (5 + (r *sin(2 * Pi * v)))
+    val y = cos(2 * Pi * u) * (5 + (r * sin(2 * Pi * v)))
+    // println(z)
     new Coord3d(x, y, z)
   }
 
@@ -50,7 +51,9 @@ object Torus {
       poly.add(torusPoint((i + 1).toDouble / steps, j.toDouble / steps))
       poly.add(torusPoint((i + 1).toDouble / steps, (j + 1).toDouble / steps))
       poly.add(torusPoint(i.toDouble / steps, (j + 1).toDouble / steps))
-      poly.setFaceDisplayed(false)
+      poly.setColor(Color.CYAN)
+      // if (i % 5 != 0 || j % 5 != 0)
+       poly.setFaceDisplayed(false)
       poly.setWireframeColor(org.jzy3d.colors.Color.GREEN);
       poly
     }
@@ -59,24 +62,28 @@ object Torus {
   def line(xs: Int, ys: Int, steps: Int) = {
 
     val points = (0 to steps).map(
-      i => torusPoint(xs * i.toDouble / steps, ys * i.toDouble / steps)
+      i => torusPoint(
+        xs * i.toDouble / steps, 
+        ys * i.toDouble / steps)
     )
-    val l = new LineStrip(points.map(_.getCoord()).asJava)
+    points.zipWithIndex.foreach{
+      case (p, i) => if (
+        p.getCoord().z > 0 || i % 3 == 0
+        ) p.setColor(Color.MAGENTA) else p.setColor(Color.WHITE) 
+        // println(p.getColor())
+      }
+    val l = new LineStrip()
+    points.foreach(
+      l.add(_)
+    )
     l.setWidth(3)
-    l.setWireframeColor(Color.MAGENTA)
+    // println(Option(l.getWireframeColor()))
+    // l.setWireframeColor(Color.MAGENTA)
     l
   }
 
   def torusGridSurface(steps: Int) = {
     val surf = new Shape(torusGridPloygons(steps).asJava)
-    surf.setColorMapper(
-      new ColorMapper(
-        new ColorMapRainbow(),
-        surf.getBounds().getZmin(),
-        surf.getBounds().getZmax(),
-        new org.jzy3d.colors.Color(1, 1, 1, 1f)
-      )
-    );
     surf.setWireframeDisplayed(true);
     surf
   }
@@ -84,12 +91,14 @@ object Torus {
   def torusChart(steps: Int) = {
     val chart = new AWTChart(Quality.Advanced)
     chart.getScene().getGraph().add(torusGridSurface(steps))
-    chart.getScene().getGraph().add(line(2, 1, steps));
+    chart.getScene().getGraph().add(line(2, 1, 25 * steps));
     chart
   }
 
   def torusImage(steps: Int) = {
     val tc = Torus.torusChart(steps)
+    // tc.setViewPoint(new Coord3d(5, 5, 5))
+    // println(tc.getViewPoint())
     tc.open("Jzy3d Demo", 600, 600)
     import java.io._
     val imageFile = new File("image.png")
