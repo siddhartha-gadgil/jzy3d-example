@@ -20,20 +20,22 @@ import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 
 object Torus {
+  val torusScale = 3.0
+
   def point(x: Double, y: Double, z: Double): Point =
     new Point(new Coord3d(x, y, z))
 
   def torusPoint(u: Double, v: Double, sc: Double = 1): Point = {
     val z = cos(v * 2 * Pi)
-    val x = sin(2 * Pi * u) * (5 + sin(2 * Pi * v))
-    val y = cos(2 * Pi * u) * (5 + sin(2 * Pi * v))
+    val x = sin(2 * Pi * u) * (torusScale + sin(2 * Pi * v))
+    val y = cos(2 * Pi * u) * (torusScale + sin(2 * Pi * v))
     point(x, y, z)
   }
 
   def torusCoords(u: Double, v: Double, r: Double = 1): Coord3d = {
     val z = r * cos(v * 2 * Pi)
-    val x = sin(2 * Pi * u) * (5 + (r * sin(2 * Pi * v)))
-    val y = cos(2 * Pi * u) * (5 + (r * sin(2 * Pi * v)))
+    val x = sin(2 * Pi * u) * (torusScale + (r * sin(2 * Pi * v)))
+    val y = cos(2 * Pi * u) * (torusScale + (r * sin(2 * Pi * v)))
     new Coord3d(x, y, z)
   }
 
@@ -88,6 +90,7 @@ object Torus {
 
   def torusImage(steps: Int): BufferedImage = {
     val tc = Torus.torusChart(steps)
+    tc.setViewPoint(new Coord3d(1, 1, 1000))
     tc.open("Jzy3d Demo", 600, 600)
     import java.io._
     val imageFile = new File("image.png")
