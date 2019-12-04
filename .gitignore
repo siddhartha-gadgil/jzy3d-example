@@ -7,3 +7,4 @@ target/
 .metals/
 .ipynb_checkpoints/
 *.jar
+*.png
