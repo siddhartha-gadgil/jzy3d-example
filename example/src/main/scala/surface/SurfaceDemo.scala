@@ -15,11 +15,11 @@ import org.jzy3d.plot3d.rendering.canvas.Quality
 import org.jzy3d.chart._
 import org.jzy3d.plot3d.rendering.view.AWTRenderer3d
 
-// object SurfaceDemo extends App {
+object SurfaceDemo extends App {
 
-//   Surface.chart.open("Jzy3d Demo", 600, 600)
+  Surface.chart.open("Jzy3d Demo", 600, 600)
 
-// }
+}
 
 object Surface{
   // Define a function to plot

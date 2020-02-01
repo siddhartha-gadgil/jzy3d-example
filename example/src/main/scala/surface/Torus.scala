@@ -119,7 +119,7 @@ object Torus {
   }
 }
 
-object TorusApp extends App {
-  Torus.torusImage(50)
+// object TorusApp extends App {
+//   Torus.torusImage(50)
 
-}
+// }
