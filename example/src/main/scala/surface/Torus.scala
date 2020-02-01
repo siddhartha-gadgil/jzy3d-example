@@ -102,6 +102,7 @@ object Torus {
     val chart = new AWTChart(Quality.Advanced)
     chart.add(torusGridSurface(steps))
     chart.add(line(2, 1, 25 * steps))
+    // chart.add(SquareGrid.shape)
     chart
   }
 
