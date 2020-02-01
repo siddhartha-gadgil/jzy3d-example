@@ -14,6 +14,7 @@ import org.jzy3d.plot3d.primitives.Shape
 import org.jzy3d.plot3d.rendering.canvas.Quality
 import org.jzy3d.chart._
 import org.jzy3d.plot3d.rendering.view.AWTRenderer3d
+import org.jzy3d.plot3d.rendering.ddp.DepthPeelingChart
 
 object SurfaceDemo extends App {
 
@@ -66,7 +67,10 @@ object Surface{
 
   // Create a chart and add the surface
   lazy val chart = {
-    val ach = new AWTChart(Quality.Advanced)
+    val ach = 
+      // new DepthPeelingChart()
+      // ach.setQuality(Quality.Advanced)
+     new AWTChart(Quality.Advanced)
     ach.add(surface)
     ach.add(surface2)
     ach
