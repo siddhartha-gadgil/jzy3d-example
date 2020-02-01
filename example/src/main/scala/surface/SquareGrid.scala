@@ -35,7 +35,8 @@ case class Square(
     a: PointVector,
     b: PointVector,
     c: PointVector,
-    d: PointVector
+    d: PointVector,
+    colour: Color = Color.MAGENTA
 ) {
   def scale(sc: Double) =
     Square(a.scale(sc), b.scale(sc), c.scale(sc), d.scale(sc))
@@ -45,7 +46,7 @@ case class Square(
   lazy val polygon : Polygon = {
       val poly = new Polygon()
       vertices.foreach(p => poly.add(p))
-      poly.setColor(Color.MAGENTA)
+      poly.setColor(colour)
       poly.setFaceDisplayed(false)
       poly.setWireframeColor(org.jzy3d.colors.Color.MAGENTA)
       poly

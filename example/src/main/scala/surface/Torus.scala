@@ -100,16 +100,17 @@ object Torus {
 
   def torusChart(steps: Int): Chart = {
     val chart = new AWTChart(Quality.Advanced)
-    chart.add(torusGridSurface(steps))
-    chart.add(line(2, 1, 25 * steps))
+    // chart.add(torusGridSurface(steps))
+    // chart.add(line(2, 1, 25 * steps))
     // chart.add(SquareGrid.shape)
+    chart.add(SurfacePlot.shape)
     chart
   }
 
   def torusImage(steps: Int): BufferedImage = {
     val tc = Torus.torusChart(steps)
-    tc.setViewPoint(new Coord3d(xv, yv, zv))
-    tc.open("Jzy3d Demo", 600, 600)
+    // tc.setViewPoint(new Coord3d(xv, yv, zv))
+    tc.open("Jzy3d Demo", 1200, 1000)
     import java.io._
     val imageFile = new File("image.png")
     tc.screenshot(imageFile)
@@ -118,7 +119,7 @@ object Torus {
   }
 }
 
-object TorusApp extends App {
-  Torus.torusImage(50)
+// object TorusApp extends App {
+//   Torus.torusImage(50)
 
-}
+// }
