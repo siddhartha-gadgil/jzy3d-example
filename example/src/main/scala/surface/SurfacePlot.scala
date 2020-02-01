@@ -29,7 +29,8 @@ class SurfacePlot(n: Int) {
           pointVector(i, j * 2, k),
           pointVector(i + 1, j * 2, k),
           pointVector(i, j * 2 + 1, k),
-          pointVector(i + 1, j * 2 + 1, k)
+          pointVector(i + 1, j * 2 + 1, k),
+          colour = Color.CYAN
         )
       val sides = for {
         j <- 0 to 1
@@ -37,7 +38,8 @@ class SurfacePlot(n: Int) {
         pointVector(i, j * 3, 0),
         pointVector(i + 1, j * 3, 0),
         pointVector(i, j * 3, 1),
-        pointVector(i + 1, j * 3, 1)
+        pointVector(i + 1, j * 3, 1),
+        colour = Color.CYAN
       )
       (topBottom ++ sides).toVector
     }
@@ -83,7 +85,8 @@ class SurfacePlot(n: Int) {
       pointVector(i * (2 * n + 1), j, 0),
       pointVector(i * (2 * n + 1), j + 1, 0),
       pointVector(i * (2 * n + 1), j, 1),
-      pointVector(i * (2 * n + 1), j + 1, 1)
+      pointVector(i * (2 * n + 1), j + 1, 1),
+      colour = Color.CYAN
     )
 
   val allSquares =
