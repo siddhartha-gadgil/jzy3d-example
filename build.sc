@@ -6,7 +6,7 @@ object example extends SbtModule{
   import coursier.maven.MavenRepository
 
   def repositories = super.repositories ++ Seq(
-    MavenRepository("http://maven.jzy3d.org/releases/")
+    MavenRepository("https://maven.jzy3d.org/releases/")
   )
 
   def ivyDeps = Agg(
