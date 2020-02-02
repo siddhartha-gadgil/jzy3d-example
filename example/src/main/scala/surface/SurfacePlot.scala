@@ -6,18 +6,17 @@ import scala.jdk.CollectionConverters._
 import org.jzy3d.colors.Color
 
 class SurfacePlot(n: Int) {
-    def x(n: Int) = {
-        val r = n % 2
-        val q = (n - r)/2
-        (2 * q) + (r * 0.5)
-    } 
-    
-    val y : Map[Int, Double] = Map(0 -> 0, 1 -> 0.2, 2 -> 0.8, 3 -> 1)
+  def x(n: Int) = {
+    val r = n % 2
+    val q = (n - r) / 2
+    (2 * q) + (r * 0.5)
+  }
 
-    def z(n: Int) = n * 0.3
+  val y: Map[Int, Double] = Map(0 -> 0, 1 -> 0.2, 2 -> 0.8, 3 -> 1)
 
-    def pointVector(a: Int, b: Int, c: Int) = PointVector(x(a), y(b), z(c))
+  def z(n: Int) = n * 0.3
 
+  def pointVector(a: Int, b: Int, c: Int) = PointVector(x(a), y(b), z(c))
 
   val outerRows =
     (0 to 2 * n).toVector.flatMap { i =>
@@ -29,8 +28,7 @@ class SurfacePlot(n: Int) {
           pointVector(i, j * 2, k),
           pointVector(i + 1, j * 2, k),
           pointVector(i, j * 2 + 1, k),
-          pointVector(i + 1, j * 2 + 1, k),
-          colour = Color.CYAN
+          pointVector(i + 1, j * 2 + 1, k)
         )
       val sides = for {
         j <- 0 to 1
@@ -52,7 +50,8 @@ class SurfacePlot(n: Int) {
           pointVector(2 * m + 1 + i, 1, 0),
           pointVector(2 * m + 1 + i, 2, 0),
           pointVector(2 * m + 1 + i, 1, 1),
-          pointVector(2 * m + 1 + i, 2, 1)
+          pointVector(2 * m + 1 + i, 2, 1),
+          colour = Color.CYAN
         )
       val vertical =
         for {
@@ -61,7 +60,8 @@ class SurfacePlot(n: Int) {
           pointVector(2 * m + 1, j, 0),
           pointVector(2 * m + 2, j, 0),
           pointVector(2 * m + 1, j, 1),
-          pointVector(2 * m + 2, j, 1)
+          pointVector(2 * m + 2, j, 1),
+          colour = Color.CYAN
         )
       horizontal ++ vertical
     }

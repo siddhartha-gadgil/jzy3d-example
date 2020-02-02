@@ -49,7 +49,7 @@ case class Square(
       vertices.foreach(p => poly.add(p))
       poly.setColor(colour)
     //   if (blank) poly.setFaceDisplayed(false)
-      poly.setWireframeColor(org.jzy3d.colors.Color.MAGENTA)
+      poly.setWireframeColor(org.jzy3d.colors.Color.BLUE)
       poly
   }
 
