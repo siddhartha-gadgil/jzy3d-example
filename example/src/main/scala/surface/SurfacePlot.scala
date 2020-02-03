@@ -18,6 +18,8 @@ class SurfacePlot(n: Int) {
 
   def pointVector(a: Int, b: Int, c: Int) = PointVector(x(a), y(b), z(c))
 
+  val grey = new Color(0.95f, 0.95f, 0.95f)
+
   val outerRows =
     (0 to 2 * n).toVector.flatMap { i =>
       val topBottom =
@@ -28,7 +30,8 @@ class SurfacePlot(n: Int) {
           pointVector(i, j * 2, k),
           pointVector(i + 1, j * 2, k),
           pointVector(i, j * 2 + 1, k),
-          pointVector(i + 1, j * 2 + 1, k)
+          pointVector(i + 1, j * 2 + 1, k),
+          colour = grey
         )
       val sides = for {
         j <- 0 to 1
@@ -74,7 +77,8 @@ class SurfacePlot(n: Int) {
       pointVector((2 * i), 1, k),
       pointVector((2 * i) + 1, 1, k),
       pointVector((2 * i), 2, k),
-      pointVector((2 * i) + 1, 2, k)
+      pointVector((2 * i) + 1, 2, k),
+      colour = grey
     )
 
   val caps =
